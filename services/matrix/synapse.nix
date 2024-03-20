@@ -1,4 +1,4 @@
-{ pkgs, lib, config, inputs, ... }:
+{ pkgs, lib, config, inputs, sops, ... }:
 let
   hostname = "matrix";
   fqdn = "${hostname}.${config.networking.domain}";
@@ -18,7 +18,7 @@ in {
 
   services.postgresql.enable = true;
   services.postgresql.initialScript = pkgs.writeText "synapse-init.sql" ''
-    CREATE ROLE "matrix-synapse" WITH LOGIN PASSWORD '${config.sops.secrets."matrix/synapsse/postgres"}';
+    CREATE ROLE "matrix-synapse" WITH LOGIN PASSWORD '${}';
     CREATE DATABASE "matrix-synapse" WITH OWNER "matrix-synapse"
       TEMPLATE template0
       LC_COLLATE = "C"
